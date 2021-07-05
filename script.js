@@ -6,7 +6,7 @@ options.addEventListener('change', () => ruleNumber = options.value)
 
 let limit = 10;
 
-
+let finalState;
 
 const initialState = [
     Math.round(Math.random()),
@@ -36,9 +36,9 @@ const rules = {
 };
 
 
-let finalState = [
-    [...initialState]
-];
+// let finalState = [
+//     [...initialState]
+// ];
 
 function getCodedState(cellState) {
     const codedState = [];
@@ -62,6 +62,7 @@ function getCodedState(cellState) {
 
 
 function getNextState(cellState) {
+    console.log(ruleNumber);
     codedState = getCodedState(cellState);
     const nextState = [];
     for (code of codedState) {
@@ -97,14 +98,18 @@ let sketch = function(p) {
             };
         }
     };
+    
 }
 
   
 
 function startCells() {
+    
+ finalState = [
+    [...initialState]
+];
     createCellStructure(initialState);
     let cellDraw = new p5(sketch);
-    
 }
 
 
