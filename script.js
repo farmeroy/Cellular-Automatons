@@ -1,9 +1,12 @@
-// alert('Webaudio Required');
-// const audioctx = new AudioContext;
+const startBtn = document.getElementById('start');
+startBtn.addEventListener('click', startCells);
+const options = document.getElementById('rule-number');
+options.addEventListener('change', () => ruleNumber = options.value)
 
 let limit = 10;
+let ruleNumber = 0;
 
-// const initialState = [ 1, 0, 0, 1, 0, 1, 0, 0, 1, 0 ];
+
 
 const initialState = [
     Math.round(Math.random()),
@@ -18,34 +21,23 @@ const initialState = [
     Math.round(Math.random())    
 ]
 
-const pentatonic = [
-    233.08,
-    277.18,
-    311.13,
-    369.99,
-    415.30,
-    466.16,
-    554.37,
-    622.25,
-    739.99,
-    830.61
-]
+
 
 const rules = {
-    '111': 0,
-    '110': 0,
-    '101': 0,
-    '011': 1,
-    '100': 1,
-    '010': 1,
-    '001': 1,
-    '000': 0
+    '111': [0, 1],
+    '110': [0, 0],
+    '101': [0, 0],
+    '011': [1, 1],
+    '100': [1, 0],
+    '010': [1, 1],
+    '001': [1, 1],
+    '000': [0, 0],
 
 };
 
 
 let finalState = [
-    initialState
+    [...initialState]
 ];
 
 function getCodedState(cellState) {
@@ -67,34 +59,19 @@ function getCodedState(cellState) {
     return codedState
 }
 
-// function playState(state) {
-//     for (let i = 0; i<state.length; i++){
-//         if (state[i] === 1) {
-//             const note = new OscillatorNode(audioctx, {frequency: pentatonic[i]});
-//             note.connect(audioctx.destination);
-//             note.start();
-//     }
-// }
-// }
+
 
 function getNextState(cellState) {
     codedState = getCodedState(cellState);
     const nextState = [];
     for (code of codedState) {
-        nextState.push(rules[code])
+        nextState.push(rules[code][ruleNumber])
     }
-    // console.log(nextState);
-    // playState(nextState);
+
     return nextState;
 }
 
-// function iterateCell(initialState) {
-//     limit --;
-//     if (limit === 0) {
-//         return;
-//     }
-//     iterateCell(getNextState(initialState))
-// }
+
 
 function createCellStructure(cellState) {
     let state = cellState;
@@ -103,13 +80,12 @@ function createCellStructure(cellState) {
         finalState.push(state);
     }
 }
-createCellStructure(initialState);
 
-function setup() {
+const p.canvasSetup =   function setup() {
     createCanvas(400, 400);
-}
-  
-function draw() {
+};
+
+const p.drawCells = function draw() {
     background(220);
     for (let i = 0; i< finalState.length; i++) {
         for (let j = 0; j<finalState[i].length; j++){
@@ -117,13 +93,18 @@ function draw() {
             square(j*40, i*40, 40)
         }
     }
+};
+  
+
+function startCells() {
+
+    createCellStructure(initialState);
+    canvasSetup();
+    drawCells();
+    
 }
 
 
 
 
 
-
-
-
-// iterateCell(initialState);
