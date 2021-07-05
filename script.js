@@ -1,15 +1,15 @@
 const startBtn = document.getElementById('start');
 startBtn.addEventListener('click', startCells);
 const options = document.getElementById('rule-number');
-let ruleNumber = 0;
+
 options.addEventListener('change', () => ruleNumber = options.value)
 
 const limit = 10;
 
 let finalState;
 
-let initialState = [  
-]
+let initialState = [ ]
+let ruleNumber = 0;
 
 
 
@@ -31,22 +31,20 @@ const rules = {
 // ];
 
 function getCodedState(cellState) {
-    const codedState = [];
-    for ( let i = 0; i<cellState.length; i++) {
-        let code = '';
-        if (i === 0) {
-            code += cellState.slice(i-1);
-        } else {
-            code += cellState.slice(i-1, i);
-        }
-        code += cellState[i];
-        code += cellState[(i+1)%cellState.length];
-      
-        
-        // console.log(code);
-        codedState.push(code)
+  const codedState = [];
+  for (let i = 0; i < cellState.length; i++) {
+    let code = "";
+    if (i === 0) {
+      code += cellState.slice(i - 1);
+    } else {
+      code += cellState.slice(i - 1, i);
     }
-    return codedState
+    code += cellState[i];
+    code += cellState[(i + 1) % cellState.length];
+
+    codedState.push(code);
+  }
+  return codedState;
 }
 
 
@@ -64,36 +62,35 @@ function getNextState(cellState) {
 
 
 function createCellStructure(cellState) {
-    let state = cellState;
-    for (let i = 0; i<limit-1; i++){
-        state = [...getNextState(state)];
-        finalState.push(state);
-    }
+  let state = cellState;
+  for (let i = 0; i < limit - 1; i++) {
+    state = [...getNextState(state)];
+    finalState.push(state);
+  }
 }
 
 let sketch = function(p) {
-    let x = 0;
-    let y = 0;
-    p.setup = function() {
-        p.createCanvas(400, 400);
-    };
-    
-    p.draw = function() {
-        p.background(220);
-        for (let i = 0; i< finalState.length; i++) {
-            for (let j = 0; j<finalState[i].length; j++){
-                p.fill( finalState[i][j] === 1 ? 255 : 0)
-                p.square(j*40, i*40, 40);
-            };
-        }
-    };
-    
+  let x = 0;
+  let y = 0;
+  p.setup = function () {
+    p.createCanvas(400, 400);
+  };
+
+  p.draw = function () {
+    p.background(220);
+    for (let i = 0; i < finalState.length; i++) {
+      for (let j = 0; j < finalState[i].length; j++) {
+        p.fill(finalState[i][j] === 1 ? 255 : 0);
+        p.square(j * 40, i * 40, 40);
+      }
+    }
+  }
 }
 
-  
+
 
 function startCells() {
-initialState = [
+  initialState = [
     Math.round(Math.random()),
     Math.round(Math.random()),
     Math.round(Math.random()),
@@ -103,17 +100,15 @@ initialState = [
     Math.round(Math.random()),
     Math.round(Math.random()),
     Math.round(Math.random()),
-    Math.round(Math.random()) 
-]
-    
- finalState = [
-    [...initialState]
-];
-if (document.querySelector('canvas')) {
-    document.querySelector('canvas').remove();
-}
-    createCellStructure(initialState);
-    let cellDraw = new p5(sketch);
+    Math.round(Math.random()),
+  ];
+
+  finalState = [[...initialState]];
+  if (document.querySelector("canvas")) {
+    document.querySelector("canvas").remove();
+  }
+  createCellStructure(initialState);
+  let cellDraw = new p5(sketch);
 }
 
 
