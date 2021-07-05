@@ -1,10 +1,10 @@
 const startBtn = document.getElementById('start');
 startBtn.addEventListener('click', startCells);
 const options = document.getElementById('rule-number');
+let ruleNumber = 0;
 options.addEventListener('change', () => ruleNumber = options.value)
 
 let limit = 10;
-let ruleNumber = 0;
 
 
 
@@ -81,26 +81,29 @@ function createCellStructure(cellState) {
     }
 }
 
-const p.canvasSetup =   function setup() {
-    createCanvas(400, 400);
-};
-
-const p.drawCells = function draw() {
-    background(220);
-    for (let i = 0; i< finalState.length; i++) {
-        for (let j = 0; j<finalState[i].length; j++){
-            fill( finalState[i][j] === 1 ? 255 : 0)
-            square(j*40, i*40, 40)
+let sketch = function(p) {
+    let x = 0;
+    let y = 0;
+    p.setup = function() {
+        p.createCanvas(400, 400);
+    };
+    
+    p.draw = function() {
+        p.background(220);
+        for (let i = 0; i< finalState.length; i++) {
+            for (let j = 0; j<finalState[i].length; j++){
+                p.fill( finalState[i][j] === 1 ? 255 : 0)
+                p.square(j*40, i*40, 40);
+            };
         }
-    }
-};
+    };
+}
+
   
 
 function startCells() {
-
     createCellStructure(initialState);
-    canvasSetup();
-    drawCells();
+    let cellDraw = new p5(sketch);
     
 }
 
