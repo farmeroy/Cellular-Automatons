@@ -15,8 +15,7 @@ const initialState = [
     Math.round(Math.random()),
     Math.round(Math.random()),
     Math.round(Math.random()),
-    Math.round(Math.random())
-    
+    Math.round(Math.random())    
 ]
 
 const pentatonic = [
