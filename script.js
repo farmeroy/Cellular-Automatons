@@ -4,21 +4,11 @@ const options = document.getElementById('rule-number');
 let ruleNumber = 0;
 options.addEventListener('change', () => ruleNumber = options.value)
 
-let limit = 10;
+const limit = 10;
 
 let finalState;
 
-const initialState = [
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random())    
+let initialState = [  
 ]
 
 
@@ -103,6 +93,18 @@ let sketch = function(p) {
   
 
 function startCells() {
+initialState = [
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()),
+    Math.round(Math.random()) 
+]
     
  finalState = [
     [...initialState]
