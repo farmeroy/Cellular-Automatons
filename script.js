@@ -62,7 +62,6 @@ function getCodedState(cellState) {
 
 
 function getNextState(cellState) {
-    console.log(ruleNumber);
     codedState = getCodedState(cellState);
     const nextState = [];
     for (code of codedState) {
@@ -108,6 +107,9 @@ function startCells() {
  finalState = [
     [...initialState]
 ];
+if (document.querySelector('canvas')) {
+    document.querySelector('canvas').remove();
+}
     createCellStructure(initialState);
     let cellDraw = new p5(sketch);
 }
