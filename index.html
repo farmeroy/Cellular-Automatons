@@ -2,16 +2,22 @@
 <html>
 <head>
     <title>Cellular Automaton</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js">
     </script>
 </head>
 <body>
     <select id='rule-number'>
-        <option value=1 selected>Rule 150</option>
+        <option value=2>Rule 150</option>
+        <option value=1>Rule 110</option> 
         <option value=0 selected>Rule 30</option>
     </select>
-    <input type='range' id='cell-number' min='10' max='40'>
+    <div>
+        <label for="cell-number">Number of Cells</label>
+        <input type='range' id='cell-number' min='10' max='40' name="cell-number">
+    </div>
 
     <button id='start'>Start Cells</button>
 

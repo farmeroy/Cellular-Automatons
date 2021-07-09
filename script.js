@@ -4,32 +4,32 @@ const options = document.getElementById('rule-number');
 
 options.addEventListener('change', () => ruleNumber = options.value)
 
-let limit = 10;
 
-let finalState;
+let finalState; //saved as a global value so that the p5js instance can easily access it
 
-let initialState = [ ]
-let ruleNumber = 0;
-
+let initialState = [ ];
+let ruleNumber = 0; // sets a default rule number
 
 
+//an object containing all the rules for encoding cell groups
 const rules = {
-    '111': [0, 1],
-    '110': [0, 0],
-    '101': [0, 0],
-    '011': [1, 1],
-    '100': [1, 0],
-    '010': [1, 1],
-    '001': [1, 1],
-    '000': [0, 0],
+    '111': [0, 0, 1],
+    '110': [0, 1, 0],
+    '101': [0, 1, 0],
+    '011': [1, 0, 1],
+    '100': [1, 1, 0],
+    '010': [1, 1, 1],
+    '001': [1, 1, 1],
+    '000': [0, 0, 0],
 
 };
 
+//returns a random 0 or 1
+function randomBi() {
+  return Math.round(Math.random())
+}
 
-// let finalState = [
-//     [...initialState]
-// ];
-
+// this iterates over the local cell and returns a three digit code
 function getCodedState(cellState) {
   const codedState = [];
   for (let i = 0; i < cellState.length; i++) {
@@ -48,7 +48,7 @@ function getCodedState(cellState) {
 }
 
 
-
+//this goes through the cell state, turns finds the codes for local cells, and returns the following state
 function getNextState(cellState) {
     codedState = getCodedState(cellState);
     const nextState = [];
@@ -60,15 +60,16 @@ function getNextState(cellState) {
 }
 
 
-
+//creates the entire structure, taking the initial state and the number of cells as arguments
 function createCellStructure(cellState, cells) {
   let state = cellState;
   for (let i = 0; i < cells - 1; i++) {
     state = [...getNextState(state)];
-    finalState.push(state);
+    finalState.push(state); //this is saved as a global value so that the p5 instance can access it
   }
 }
 
+//sets up the p5 environment
 let sketch = function(p) {
   cells = document.getElementById('cell-number').value;
   let x = 0;
@@ -88,10 +89,11 @@ let sketch = function(p) {
   }
 }
 
+//creates an array of random binary cells based on the cellNumber argument
 function setInitialState(cellNumber) {
   const initialState = [];
   for (let i = 0; i < cellNumber; i++) {
-    initialState.push(Math.round(Math.random()))
+    initialState.push(randomBi())
   }
   return initialState;
 }
@@ -99,22 +101,7 @@ function setInitialState(cellNumber) {
 
 function startCells() {
   let cells = document.getElementById('cell-number').value;
-  // limit = cells;
-  initialState = setInitialState(cells)
-  // [
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  //   Math.round(Math.random()),
-  // ]
-  ;
-
+  initialState = setInitialState(cells);
   finalState = [[...initialState]];
   if (document.querySelector("canvas")) {
     document.querySelector("canvas").remove();
