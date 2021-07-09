@@ -71,7 +71,7 @@ function createCellStructure(cellState, cells) {
 
 //sets up the p5 environment
 let sketch = function(p) {
-  cells = document.getElementById('cell-number').value;
+  
   let x = 0;
   let y = 0;
   p.setup = function () {
@@ -83,6 +83,10 @@ let sketch = function(p) {
   };
 
   p.draw = function () {
+  let cells = document.getElementById('cell-number').value;
+  initialState = setInitialState(cells);
+  finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
+  createCellStructure(initialState, cells);
     p.background(220);
     for (let i = 0; i < finalState.length; i++) {
       for (let j = 0; j < finalState[i].length; j++) {
@@ -130,10 +134,7 @@ function fixedInitialState(cellNumber) {
 
 
 function startCells() {
-  let cells = document.getElementById('cell-number').value;
-  initialState = setInitialState(cells);
-  finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
-  createCellStructure(initialState, cells);
+  
   if (!document.querySelector("canvas")) {
     let cellDraw = new p5(sketch);
   } 
