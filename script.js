@@ -2,13 +2,10 @@ const startBtn = document.getElementById('start');
 startBtn.addEventListener('click', startCells);
 const options = document.getElementById('rule-number');
 
-options.addEventListener('change', () => ruleNumber = options.value)
-
-
 let finalState; //saved as a global value so that the p5js instance can easily access it
 
 let initialState = [ ];
-let ruleNumber = 0; // sets a default rule number
+let ruleNumber = options.value; // sets a default rule number
 
 
 //an object containing all the rules for encoding cell groups
@@ -16,8 +13,8 @@ const rules = {
     '111': [0, 0, 1],
     '110': [0, 1, 0],
     '101': [0, 1, 0],
-    '011': [1, 0, 1],
-    '100': [1, 1, 0],
+    '100': [1, 0, 1],
+    '011': [1, 1, 0],
     '010': [1, 1, 1],
     '001': [1, 1, 1],
     '000': [0, 0, 0],
@@ -28,6 +25,8 @@ const rules = {
 function randomBi() {
   return Math.round(Math.random())
 }
+
+
 
 // this iterates over the local cell and returns a three digit code
 function getCodedState(cellState) {
@@ -50,6 +49,7 @@ function getCodedState(cellState) {
 
 //this goes through the cell state, turns finds the codes for local cells, and returns the following state
 function getNextState(cellState) {
+    ruleNumber = options.value;
     codedState = getCodedState(cellState);
     const nextState = [];
     for (code of codedState) {
@@ -82,20 +82,46 @@ let sketch = function(p) {
     p.background(220);
     for (let i = 0; i < finalState.length; i++) {
       for (let j = 0; j < finalState[i].length; j++) {
-        p.fill(finalState[i][j] === 1 ? 255 : 0);
+        p.fill(finalState[i][j] === 0 ? 255 : 0);
         p.square(j * (400/cells), i * (400/cells), (400/cells));
       }
     }
   }
 }
 
-//creates an array of random binary cells based on the cellNumber argument
 function setInitialState(cellNumber) {
+  const initialSate = [];
+  const stateType = document.getElementById('state-type').value;
+  if (stateType === 'random') {
+    initialState = randomInitialState(cellNumber)
+  } else {
+    initialState = fixedInitialState(cellNumber)
+  }
+  return initialState;
+}
+
+//creates an array of random binary cells based on the cellNumber argument
+function randomInitialState(cellNumber) {
   const initialState = [];
   for (let i = 0; i < cellNumber; i++) {
     initialState.push(randomBi())
   }
   return initialState;
+}
+
+//generate a cellular state with a single black cell
+function fixedInitialState(cellNumber) {
+  const blackCell = Math.floor(cellNumber/2);
+  const initialState = [];
+  for (let i = 0; i < cellNumber; i++) {
+    if (i === blackCell) {
+      initialState.push(1)
+    } else {
+      initialState.push(0)
+     }
+  }
+  return initialState;
+
 }
 
 
