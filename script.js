@@ -4,7 +4,7 @@ const options = document.getElementById('rule-number');
 
 options.addEventListener('change', () => ruleNumber = options.value)
 
-const limit = 10;
+let limit = 10;
 
 let finalState;
 
@@ -61,15 +61,16 @@ function getNextState(cellState) {
 
 
 
-function createCellStructure(cellState) {
+function createCellStructure(cellState, cells) {
   let state = cellState;
-  for (let i = 0; i < limit - 1; i++) {
+  for (let i = 0; i < cells - 1; i++) {
     state = [...getNextState(state)];
     finalState.push(state);
   }
 }
 
 let sketch = function(p) {
+  cells = document.getElementById('cell-number').value;
   let x = 0;
   let y = 0;
   p.setup = function () {
@@ -81,33 +82,44 @@ let sketch = function(p) {
     for (let i = 0; i < finalState.length; i++) {
       for (let j = 0; j < finalState[i].length; j++) {
         p.fill(finalState[i][j] === 1 ? 255 : 0);
-        p.square(j * 40, i * 40, 40);
+        p.square(j * (400/cells), i * (400/cells), (400/cells));
       }
     }
   }
 }
 
+function setInitialState(cellNumber) {
+  const initialState = [];
+  for (let i = 0; i < cellNumber; i++) {
+    initialState.push(Math.round(Math.random()))
+  }
+  return initialState;
+}
 
 
 function startCells() {
-  initialState = [
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-    Math.round(Math.random()),
-  ];
+  let cells = document.getElementById('cell-number').value;
+  // limit = cells;
+  initialState = setInitialState(cells)
+  // [
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  //   Math.round(Math.random()),
+  // ]
+  ;
 
   finalState = [[...initialState]];
   if (document.querySelector("canvas")) {
     document.querySelector("canvas").remove();
   }
-  createCellStructure(initialState);
+  createCellStructure(initialState, cells);
   let cellDraw = new p5(sketch);
 }
 
