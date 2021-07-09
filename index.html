@@ -10,19 +10,21 @@
 </head>
 <body>
     <select id='rule-number'>
+        <option value=3>Random Rule</option>
         <option value=2>Rule 150</option>
         <option value=1>Rule 110</option> 
         <option value=0 selected>Rule 30</option>
     </select>
     <div>
         <label for="cell-number">Number of Cells</label>
-        <input type='range' step="2" id='cell-number' min='10' max='40' name="cell-number">
+        <input type='range' step="2" id='cell-number' min='10' max='100' name="cell-number">
     </div>
     <select id='state-type'>
         <option value="random" selected>Random Initial State</option>
         <option value="centered">Centered Initial Sate</option>
     </select>
     <button id='start'>Start Cells</button>
+    <button id='random'>Generate Random Rule</button>
 
 </body>
 

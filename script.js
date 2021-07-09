@@ -3,6 +3,9 @@ startBtn.addEventListener('click', startCells);
 const options = document.getElementById('rule-number');
 const cellRange = document.getElementById('cell-number');
 
+const randomBtn = document.getElementById('random');
+randomBtn.addEventListener('click', () => { rules =setRandomRule()});
+
 let finalState; //saved as a global value so that the p5js instance can easily access it
 
 let initialState = [ ];
@@ -10,17 +13,23 @@ let ruleNumber = options.value; // sets a default rule number
 
 
 //an object containing all the rules for encoding cell groups
-const rules = {
-    '111': [0, 0, 1],
-    '110': [0, 1, 0],
-    '101': [0, 1, 0],
-    '100': [1, 0, 1],
-    '011': [1, 1, 0],
-    '010': [1, 1, 1],
-    '001': [1, 1, 1],
-    '000': [0, 0, 0],
+let rules = setRandomRule() // saved as global variable for p5 access
 
-};
+
+// a funtion that ensures a new random number is generated for rules content
+function setRandomRule() {
+  return  {
+    '111': [0, 0, 1, randomBi()],
+    '110': [0, 1, 0, randomBi()],
+    '101': [0, 1, 0, randomBi()],
+    '100': [1, 0, 1, randomBi()],
+    '011': [1, 1, 0, randomBi()],
+    '010': [1, 1, 1, randomBi()],
+    '001': [1, 1, 1, randomBi()],
+    '000': [0, 0, 0, randomBi()],
+
+}
+}
 
 //returns a random 0 or 1
 function randomBi() {
@@ -34,7 +43,7 @@ function getCodedState(cellState) {
   const codedState = [];
   for (let i = 0; i < cellState.length; i++) {
     let code = "";
-    if (i === 0) {
+    if (i === 0) { // creates a circular iteration over the array
       code += cellState.slice(i - 1);
     } else {
       code += cellState.slice(i - 1, i);
@@ -50,9 +59,10 @@ function getCodedState(cellState) {
 
 //this goes through the cell state, turns finds the codes for local cells, and returns the following state
 function getNextState(cellState) {
-    ruleNumber = options.value;
+    
     codedState = getCodedState(cellState);
     const nextState = [];
+   
     for (code of codedState) {
         nextState.push(rules[code][ruleNumber])
     }
@@ -80,12 +90,17 @@ let sketch = function(p) {
     p.noLoop();
     // const startBtn = document.getElementById('start');
     startBtn.addEventListener('click', ()=> {p.redraw()});
-    cellRange.addEventListener('click', ()=> { p.redraw() });
+    cellRange.addEventListener('input', ()=> { p.redraw() });
+    randomBtn.addEventListener('click', () => { options.value=3; p.redraw() });
 
      
   }; 
 
   p.draw = function () {
+  ruleNumber = options.value;
+  // if (ruleNumber === 4) {
+  //   rules = setRandomRule(); // ensures that a random rule is created
+  // }
   let cells = cellRange.value;
   initialState = setInitialState(cells);
   finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
@@ -137,7 +152,6 @@ function fixedInitialState(cellNumber) {
 
 
 function startCells() {
-  
   if (!document.querySelector("canvas")) {
     let cellDraw = new p5(sketch);
   } 
