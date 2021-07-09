@@ -128,12 +128,11 @@ function fixedInitialState(cellNumber) {
 function startCells() {
   let cells = document.getElementById('cell-number').value;
   initialState = setInitialState(cells);
-  finalState = [[...initialState]];
-  if (document.querySelector("canvas")) {
-    document.querySelector("canvas").remove();
-  }
+  finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
   createCellStructure(initialState, cells);
-  let cellDraw = new p5(sketch);
+  if (!document.querySelector("canvas")) {
+    let cellDraw = new p5(sketch);
+  } 
 }
 
 
