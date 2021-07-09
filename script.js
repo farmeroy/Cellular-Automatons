@@ -92,6 +92,7 @@ let sketch = function(p) {
     startBtn.addEventListener('click', ()=> {p.redraw()});
     cellRange.addEventListener('input', ()=> { p.redraw() });
     randomBtn.addEventListener('click', () => { options.value=3; p.redraw() });
+    document.getElementById('state-type').addEventListener('change', () => {p.redraw()})
 
      
   }; 
