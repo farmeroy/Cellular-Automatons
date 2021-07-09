@@ -1,6 +1,7 @@
 const startBtn = document.getElementById('start');
 startBtn.addEventListener('click', startCells);
 const options = document.getElementById('rule-number');
+const cellRange = document.getElementById('cell-number');
 
 let finalState; //saved as a global value so that the p5js instance can easily access it
 
@@ -79,11 +80,13 @@ let sketch = function(p) {
     p.noLoop();
     // const startBtn = document.getElementById('start');
     startBtn.addEventListener('click', ()=> {p.redraw()});
+    cellRange.addEventListener('click', ()=> { p.redraw() });
+
      
-  };
+  }; 
 
   p.draw = function () {
-  let cells = document.getElementById('cell-number').value;
+  let cells = cellRange.value;
   initialState = setInitialState(cells);
   finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
   createCellStructure(initialState, cells);
