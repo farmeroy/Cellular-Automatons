@@ -76,6 +76,10 @@ let sketch = function(p) {
   let y = 0;
   p.setup = function () {
     p.createCanvas(400, 400);
+    p.noLoop();
+    // const startBtn = document.getElementById('start');
+    startBtn.addEventListener('click', ()=> {p.redraw()});
+     
   };
 
   p.draw = function () {
