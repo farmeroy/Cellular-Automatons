@@ -4,27 +4,28 @@
     <title>Cellular Automaton</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href='styles.css'></style>
     <script src="script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js">
     </script>
 </head>
 <body>
-    <select id='rule-number'>
-        <option value=3>Random Rule</option>
-        <option value=2>Rule 150</option>
-        <option value=1>Rule 110</option> 
-        <option value=0 selected>Rule 30</option>
-    </select>
-    <div>
-        <label for="cell-number">Number of Cells</label>
-        <input type='range' step="2" id='cell-number' min='10' max='100' name="cell-number">
+    <h1>One-Dimension Cellular Automata</h1>
+
+    <div class='controls'>
+        <label for='rule-number'>Enter a Rule Number (0-255)</label>
+        <input type='number' min='0' max='255' value='30' name='rule-number' id='rule-number'>
+        <div>
+            <label for="cell-number">Number of Cells</label>
+            <input type='range' step="2" id='cell-number' min='10' max='100' name="cell-number">
+        </div>
+        <select id='state-type'>
+            <option value="random" selected>Random Initial State</option>
+            <option value="centered">Centered Initial Sate</option>
+        </select>
+        <button id='start'>Start Cells</button>
+        <button id='random'>Generate Random Rule</button>
     </div>
-    <select id='state-type'>
-        <option value="random" selected>Random Initial State</option>
-        <option value="centered">Centered Initial Sate</option>
-    </select>
-    <button id='start'>Start Cells</button>
-    <button id='random'>Generate Random Rule</button>
 
 </body>
 

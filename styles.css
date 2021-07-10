@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+  }
+
+body {
+    text-align: center;
+}
+
+.controls {
+    margin: 1rem;
+}
+.p5canvas {
+    margin: auto;
+    width: 100%;
+}

@@ -4,32 +4,50 @@ const options = document.getElementById('rule-number');
 const cellRange = document.getElementById('cell-number');
 
 const randomBtn = document.getElementById('random');
-randomBtn.addEventListener('click', () => { rules =setRandomRule()});
+randomBtn.addEventListener('click', () => { rules = setRandomRule()});
+options.addEventListener('change', () => { rules = ruleGenerator(options.value)});
 
 let finalState; //saved as a global value so that the p5js instance can easily access it
 
-let initialState = [ ];
-let ruleNumber = options.value; // sets a default rule number
+let initialState = [ ]; // saved in the global for p5js to access
 
 
-//an object containing all the rules for encoding cell groups
-let rules = setRandomRule() // saved as global variable for p5 access
 
+//default rules value
+let rules = ruleGenerator(30);
+
+//randomly generate a number
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max-min+1) + min);
+} 
+
+//generates a rules object from a decimal number by converting the decimal into a binary number
+function ruleGenerator(num) {
+  ruleBinary = (num*1).toString(2).split('');
+  //make sure the rule is the right length by adding zeros in the beginning
+  for (i = ruleBinary.length; i<8; i++) {
+    ruleBinary.unshift('0')
+  };
+  //send the bits of the rule to the rules object
+  return {
+    '111': parseInt(ruleBinary[0]),
+    '110': parseInt(ruleBinary[1]),
+    '101': parseInt(ruleBinary[2]),
+    '100': parseInt(ruleBinary[3]),
+    '011': parseInt(ruleBinary[4]),
+    '010': parseInt(ruleBinary[5]),
+    '001': parseInt(ruleBinary[6]),
+    '000': parseInt(ruleBinary[7]),
+  }
+}
 
 // a funtion that ensures a new random number is generated for rules content
 function setRandomRule() {
-  return  {
-    '111': [0, 0, 1, randomBi()],
-    '110': [0, 1, 0, randomBi()],
-    '101': [0, 1, 0, randomBi()],
-    '100': [1, 0, 1, randomBi()],
-    '011': [1, 1, 0, randomBi()],
-    '010': [1, 1, 1, randomBi()],
-    '001': [1, 1, 1, randomBi()],
-    '000': [0, 0, 0, randomBi()],
+  const num = randomNum(0,255);
+  options.value = num;
+  return ruleGenerator(num)
+}
 
-}
-}
 
 //returns a random 0 or 1
 function randomBi() {
@@ -64,7 +82,7 @@ function getNextState(cellState) {
     const nextState = [];
    
     for (code of codedState) {
-        nextState.push(rules[code][ruleNumber])
+        nextState.push(rules[code])
     }
 
     return nextState;
@@ -91,17 +109,15 @@ let sketch = function(p) {
     // const startBtn = document.getElementById('start');
     startBtn.addEventListener('click', ()=> {p.redraw()});
     cellRange.addEventListener('input', ()=> { p.redraw() });
-    randomBtn.addEventListener('click', () => { options.value=3; p.redraw() });
+    randomBtn.addEventListener('click', () => { p.redraw() });
+
+    options.addEventListener('change', () => {p.redraw()})
     document.getElementById('state-type').addEventListener('change', () => {p.redraw()})
 
      
   }; 
 
   p.draw = function () {
-  ruleNumber = options.value;
-  // if (ruleNumber === 4) {
-  //   rules = setRandomRule(); // ensures that a random rule is created
-  // }
   let cells = cellRange.value;
   initialState = setInitialState(cells);
   finalState = [[...initialState]]; // changes a global value so that the p5 instance can access it
@@ -157,8 +173,6 @@ function startCells() {
     let cellDraw = new p5(sketch);
   } 
 }
-
-
 
 
 
